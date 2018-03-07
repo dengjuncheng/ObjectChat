@@ -1,4 +1,4 @@
-QT += quick
+QT += quick sql websockets widgets xml multimedia
 CONFIG += c++11
 
 # The following define makes your compiler emit warnings if you use
@@ -12,9 +12,22 @@ DEFINES += QT_DEPRECATED_WARNINGS
 # You can also select to disable deprecated APIs only up to a certain version of Qt.
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
-SOURCES += main.cpp
+SOURCES += main.cpp \
+    dbhelper.cpp \
+    logincontroller.cpp \
+    connectioncenter.cpp \
+    downloadcenter.cpp \
+    capturescreen.cpp \
+    interactioncenter.cpp \
+    filehelper.cpp \
+    uploadservice.cpp \
+    uploadcontroller.cpp \
+    messagecontroller.cpp \
+    voicechatcontroller.cpp \
+    voicechatservice.cpp
 
-RESOURCES += qml.qrc
+RESOURCES += qml.qrc \
+    icon.qrc
 
 # Additional import path used to resolve QML modules in Qt Creator's code model
 QML_IMPORT_PATH =
@@ -26,3 +39,17 @@ QML_DESIGNER_IMPORT_PATH =
 qnx: target.path = /tmp/$${TARGET}/bin
 else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
+
+HEADERS += \
+    dbhelper.h \
+    logincontroller.h \
+    connectioncenter.h \
+    downloadcenter.h \
+    capturescreen.h \
+    interactioncenter.h \
+    filehelper.h \
+    uploadservice.h \
+    uploadcontroller.h \
+    messagecontroller.h \
+    voicechatcontroller.h \
+    voicechatservice.h

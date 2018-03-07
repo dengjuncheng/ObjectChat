@@ -1,5 +1,15 @@
 <RCC>
     <qresource prefix="/">
         <file>main.qml</file>
+        <file>HeadNormal.qml</file>
+        <file>OnlineState.qml</file>
+        <file>HeadSmall.qml</file>
+        <file>ChatWindow.qml</file>
+        <file>LeftTitleBar.qml</file>
+        <file>RecentContact.qml</file>
+        <file>ChatArea.qml</file>
+        <file>UtilButton.qml</file>
+        <file>FriendsPage.qml</file>
+        <file>FriendInfo.qml</file>
     </qresource>
 </RCC>

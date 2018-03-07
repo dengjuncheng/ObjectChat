@@ -1,0 +1,37 @@
+<RCC>
+    <qresource prefix="/icon">
+        <file>icon/close.png</file>
+        <file>icon/head-default.jpg</file>
+        <file>icon/hidden.png</file>
+        <file>icon/add.png</file>
+        <file>icon/login-btn.png</file>
+        <file>icon/login-btn2.png</file>
+        <file>icon/login-btn3.png</file>
+        <file>icon/more-1.png</file>
+        <file>icon/more-2.png</file>
+        <file>icon/more-3.png</file>
+        <file>icon/login-animation.png</file>
+        <file>icon/chat-close.png</file>
+        <file>icon/chat-min.png</file>
+        <file>icon/chat-1.png</file>
+        <file>icon/chat-2.png</file>
+        <file>icon/contact-1.png</file>
+        <file>icon/contact-2.png</file>
+        <file>icon/forum-1.png</file>
+        <file>icon/forum-2.png</file>
+        <file>icon/option-1.png</file>
+        <file>icon/option-2.png</file>
+        <file>icon/cut-btn-1.png</file>
+        <file>icon/cut-btn-2.png</file>
+        <file>icon/emoji-btn-1.png</file>
+        <file>icon/emoji-btn-2.png</file>
+        <file>icon/file-btn-1.png</file>
+        <file>icon/file-btn-2.png</file>
+        <file>icon/phone-btn-1.png</file>
+        <file>icon/phone-btn-2.png</file>
+        <file>icon/video-btn-1.png</file>
+        <file>icon/video-btn-2.png</file>
+        <file>icon/man.png</file>
+        <file>icon/woman.png</file>
+    </qresource>
+</RCC>
