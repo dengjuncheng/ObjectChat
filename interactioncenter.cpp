@@ -39,7 +39,7 @@ InteractionCenter::InteractionCenter(CaptureScreen *obj, FileHelper* obj2, Conne
     connect(this,&InteractionCenter::startAsynVoiceChat, m_voiceChatController, &VoiceChatController::startVoiceChat);
     connect(conn, &ConnectionCenter::voiceChatRefused, this, &InteractionCenter::voiceChatRefused);
     connect(conn, &ConnectionCenter::breakVoiceChat, this, &InteractionCenter::voiceChatBreak); //改变界面数据
-    connect(conn,&ConnectionCenter::breakVoiceChat,this,&InteractionCenter::interruptAsynVoiceChat); //修改另一个线程中的语音通信
+    connect(conn,&ConnectionCenter::breakVoiceChat,m_voiceChatController,&VoiceChatController::interrupt); //修改另一个线程中的语音通信
 }
 
 InteractionCenter::~InteractionCenter()
@@ -266,10 +266,5 @@ void InteractionCenter::breakVoiceChat(QString userId, QString friendId)
     QString data(QString(document.toJson()));
     QString msg = QString("%1##%2").arg(QString::number(Code::BREAK_VOICE_CHAT)).arg(data);
     m_conn->sendTextMsg(msg.toUtf8().toBase64());
-    interruptAsynVoiceChat(); //发起断开方 终止udp输出和音频录入
-}
-
-void InteractionCenter::interruptAsynVoiceChat()
-{
-    m_voiceChatController->interrupt();
+    m_voiceChatController->interrupt(); //发起断开方 终止udp输出和音频录入
 }

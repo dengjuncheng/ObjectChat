@@ -52,7 +52,6 @@ public slots:
     void onStartVoiceChat(QString targetIp);
     void refuseVoiceChat(QString userId, QString friendId);
     void breakVoiceChat(QString userId, QString friendId);
-    void interruptAsynVoiceChat();
 private:
     CaptureScreen *captureScreen;
     FileHelper *fileHelper;
