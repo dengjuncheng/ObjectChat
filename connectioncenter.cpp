@@ -88,7 +88,7 @@ void ConnectionCenter::onTextMessageReceived(QString msg)
     case Code::ACCEPT_VOICE_CHAT:
         emit startVoiceChat(strList[1]);
         break;
-    case Code::REFUSE_VOICE_CHAR:
+    case Code::REFUSE_VOICE_CHAT:
         emit voiceChatRefused(strList[1]);
         break;
     case Code::BREAK_VOICE_CHAT:
