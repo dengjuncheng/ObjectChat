@@ -190,11 +190,10 @@ Window {
         //组件加载完成时加载数据
         function loadData(){
             model.append({"headPic":"qrc:/icon/icon/add.png","nickName":"default","stuId":"","password":"","remenberPass":0});
-            var comp;
+            var comp = Qt.createComponent("HeadSmall.qml");
             for(var i = 0 ; i < model.count ; i++){
                 var x = 15 + i % 3 * 25 + i % 3 * 40;
                 var y = i > 2 ? 60 : 10;
-                comp = Qt.createComponent("HeadSmall.qml");
                 var obj = comp.createObject(users_rec, {"source":model.get(i).headPic,"x":x,"y":y,"userData":model.get(i),"order_number":i});
                 obj.clicked.connect(onSmallHeadClick);
                 obj.deleteClicked.connect(onDeleteClicked);

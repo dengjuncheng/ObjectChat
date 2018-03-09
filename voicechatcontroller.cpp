@@ -12,8 +12,8 @@ VoiceChatController::VoiceChatController(QObject *parent) : QObject(parent)
 
 VoiceChatController::~VoiceChatController()
 {
-    m_service->deleteLater();
     m_workThread.exit(0);
+    delete m_service;
 }
 
 void VoiceChatController::interrupt()

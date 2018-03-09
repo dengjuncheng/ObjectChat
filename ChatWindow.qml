@@ -129,7 +129,7 @@ Window {
         onStartVoiceChat:{
             var info = JSON.parse(msg);
             var userId = info.userId;
-            var friendId = info .friendId;
+            var friendId = info.friendId;
             if(userId !== userData.stuId || friendId !== voiceChatWindow.stuId || !voiceChatWindow.visible){
                 return;
             }
@@ -161,7 +161,7 @@ Window {
             if(userId !== userData.stuId || friendId !== voiceChatWindow.stuId || !voiceChatWindow.visible){
                 return;
             }
-            infoText.text = "对方取消了通话";
+            infoText.text = "语音通话结束";
             voiceChatWindow.visible = false;
             showAnimation.start();
         }
@@ -239,7 +239,7 @@ Window {
                 stateText.text = stateValue;
                 //这里有大问题！！！！！！！！！！
                 //TODO:需要根据窗口当前状态来判断
-                interactionCenter.cancleVoiceRequest(userData.stuId, voiceChatWindow.stuId);
+                //interactionCenter.cancleVoiceRequest(userData.stuId, voiceChatWindow.stuId);
             }
         }
         function openWindow(friendId, derection){
@@ -357,6 +357,9 @@ Window {
             visible: false;
             onClick: {
                 interactionCenter.breakVoiceChat(userData.stuId, voiceChatWindow.stuId);
+                voiceChatWindow.visible = false;
+                infoText.text = "语音通话结束";
+                showAnimation.start();
             }
         }
     }

@@ -46,6 +46,7 @@ void VoiceChatService::onReadSendRequest(QString ipAdress)
     inputDevice = m_audioInput->start();
     outputDevice = m_audioOutput->start();
     inputDevice->open(QIODevice::ReadOnly);
+    outputDevice->open(QIODevice::WriteOnly);
     this->m_anotherAddress = ipAdress;
     m_readSocket->bind(QHostAddress::AnyIPv4, m_port, QUdpSocket::ShareAddress | QUdpSocket::ReuseAddressHint);
     //m_readSocket->joinMulticastGroup (QHostAddress("224.0.0.0"));
@@ -83,6 +84,7 @@ void VoiceChatService::close()
         outputDevice->close();
     }
     m_readSocket->disconnectFromHost();
+    m_writeSocket->disconnectFromHost();
     disconnect(m_readSocket, &QUdpSocket::readyRead, this, &VoiceChatService::onRequestMsgRecived);
     disconnect(inputDevice,&QIODevice::readyRead,this,&VoiceChatService::onInputReadyRead);
 }
