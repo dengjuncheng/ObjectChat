@@ -12,8 +12,10 @@ public:
     explicit VoiceChatController(QObject *parent = nullptr);
     ~VoiceChatController();
 signals:
-    void startVoiceChat(QString idAddress);
+    void startVoiceChat(QString ipAddress);
+    void stop();
 public slots:
+    void interrupt();
 private:
     QThread m_workThread;
     VoiceChatService *m_service;

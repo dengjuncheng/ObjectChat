@@ -128,7 +128,7 @@ Rectangle{
                 pressSource: "qrc:/icon/icon/phone-btn-2.png";
                 normalSource:"qrc:/icon/icon/phone-btn-1.png";
                 onClicked: {
-                    interactionCenter.voiceChatRequest(userData.stuId,"123");
+                    interactionCenter.readyVoiceChat(userData.stuId, friendData.stuId);
                 }
             }
             UtilButton{

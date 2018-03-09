@@ -77,7 +77,23 @@ void ConnectionCenter::onTextMessageReceived(QString msg)
         emit unreadMsgResult(strList[1]);
         break;
     case Code::VOICE_CHAT://请求语音聊天的结果
-
+        emit voiceChatRequestResult(strList[1]);
+        break;
+    case Code::NEW_VOICE_CHAT_REQUEST:
+        emit newVoiceChatRequest(strList[1]);
+        break;
+    case Code::CANLE_VOICE_CHAT:
+        emit cancleVoiceChat(strList[1]);
+        break;
+    case Code::ACCEPT_VOICE_CHAT:
+        emit startVoiceChat(strList[1]);
+        break;
+    case Code::REFUSE_VOICE_CHAR:
+        emit voiceChatRefused(strList[1]);
+        break;
+    case Code::BREAK_VOICE_CHAT:
+        emit breakVoiceChat(strList[1]);
+        break;
     default:
         break;
     }

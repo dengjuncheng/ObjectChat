@@ -11,5 +11,6 @@
         <file>UtilButton.qml</file>
         <file>FriendsPage.qml</file>
         <file>FriendInfo.qml</file>
+        <file>MediaButton.qml</file>
     </qresource>
 </RCC>

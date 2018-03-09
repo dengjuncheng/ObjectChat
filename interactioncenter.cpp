@@ -31,6 +31,15 @@ InteractionCenter::InteractionCenter(CaptureScreen *obj, FileHelper* obj2, Conne
 
     //语音聊天信号槽连接
     connect(conn,&ConnectionCenter::voiceChatRequestResult, this, &InteractionCenter::voiceChatRequestResult);
+    connect(conn,&ConnectionCenter::newVoiceChatRequest, this, &InteractionCenter::newVoiceChatRequest);
+    connect(conn,&ConnectionCenter::cancleVoiceChat, this,&InteractionCenter::cancleVoiceChat);
+    connect(conn,&ConnectionCenter::startVoiceChat,this,&InteractionCenter::startVoiceChat);
+
+    //连接到语音传输线程，开始通过目标ip传输语音消息 ,因为需要异步使用音频消息，所以需要使用信号槽连接
+    connect(this,&InteractionCenter::startAsynVoiceChat, m_voiceChatController, &VoiceChatController::startVoiceChat);
+    connect(conn, &ConnectionCenter::voiceChatRefused, this, &InteractionCenter::voiceChatRefused);
+    connect(conn, &ConnectionCenter::breakVoiceChat, this, &InteractionCenter::voiceChatBreak); //改变界面数据
+    connect(conn,&ConnectionCenter::breakVoiceChat,this,&InteractionCenter::interruptAsynVoiceChat); //修改另一个线程中的语音通信
 }
 
 InteractionCenter::~InteractionCenter()
@@ -201,6 +210,66 @@ void InteractionCenter::readyVoiceChat(QString userId, QString friendId)
     jsonObj.insert("userId", userId);
     jsonObj.insert("friendId", friendId);
     document.setObject(jsonObj);
-    QString msg = QString("%1##%2").arg(QString::number(Code::VOICE_CHAT).arg(QString(document.toJson())));
+    QString data(QString(document.toJson()));
+    QString msg = QString("%1##%2").arg(QString::number(Code::VOICE_CHAT)).arg(data);
     m_conn->sendTextMsg(msg.toUtf8().toBase64());
+}
+
+void InteractionCenter::cancleVoiceRequest(QString userId, QString friendId)
+{
+    QJsonDocument document;
+    QJsonObject  jsonObj;
+    jsonObj.insert("userId", userId);
+    jsonObj.insert("friendId", friendId);
+    document.setObject(jsonObj);
+    QString data(QString(document.toJson()));
+    QString msg = QString("%1##%2").arg(QString::number(Code::CANLE_VOICE_CHAT)).arg(data);
+    m_conn->sendTextMsg(msg.toUtf8().toBase64());
+}
+
+void InteractionCenter::accepteVoiceRequest(QString userId, QString friendId)
+{
+    QJsonDocument document;
+    QJsonObject  jsonObj;
+    jsonObj.insert("userId", userId);
+    jsonObj.insert("friendId", friendId);
+    document.setObject(jsonObj);
+    QString data(QString(document.toJson()));
+    QString msg = QString("%1##%2").arg(QString::number(Code::ACCEPT_VOICE_CHAT)).arg(data);
+    m_conn->sendTextMsg(msg.toUtf8().toBase64());
+}
+
+void InteractionCenter::onStartVoiceChat(QString targetIp)
+{
+    emit startAsynVoiceChat(targetIp);
+}
+
+void InteractionCenter::refuseVoiceChat(QString userId, QString friendId)
+{
+    QJsonDocument document;
+    QJsonObject  jsonObj;
+    jsonObj.insert("userId", userId);
+    jsonObj.insert("friendId", friendId);
+    document.setObject(jsonObj);
+    QString data(QString(document.toJson()));
+    QString msg = QString("%1##%2").arg(QString::number(Code::REFUSE_VOICE_CHAT)).arg(data);
+    m_conn->sendTextMsg(msg.toUtf8().toBase64());
+}
+
+void InteractionCenter::breakVoiceChat(QString userId, QString friendId)
+{
+    QJsonDocument document;
+    QJsonObject  jsonObj;
+    jsonObj.insert("userId", userId);
+    jsonObj.insert("friendId", friendId);
+    document.setObject(jsonObj);
+    QString data(QString(document.toJson()));
+    QString msg = QString("%1##%2").arg(QString::number(Code::BREAK_VOICE_CHAT)).arg(data);
+    m_conn->sendTextMsg(msg.toUtf8().toBase64());
+    interruptAsynVoiceChat(); //发起断开方 终止udp输出和音频录入
+}
+
+void InteractionCenter::interruptAsynVoiceChat()
+{
+    m_voiceChatController->interrupt();
 }

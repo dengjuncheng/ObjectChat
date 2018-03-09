@@ -20,6 +20,11 @@ signals:
     void msgStateChangedSuccess(QString uuid);
     void unreadMsgResult(QString msg);
     void voiceChatRequestResult(QString msg);
+    void newVoiceChatRequest(QString msg);
+    void cancleVoiceChat(QString msg);
+    void startVoiceChat(QString msg);
+    void voiceChatRefused(QString msg);
+    void breakVoiceChat(QString msg);
 public slots:
     void onConnected();
     void onDestroy();
@@ -39,7 +44,12 @@ enum Code{
     NEW_MSG,
     MSG_STATE_CHANGED,
     UNREAD_MSG,
-    VOICE_CHAT
+    VOICE_CHAT,
+    NEW_VOICE_CHAT_REQUEST,
+    CANLE_VOICE_CHAT,
+    ACCEPT_VOICE_CHAT,
+    REFUSE_VOICE_CHAT,
+    BREAK_VOICE_CHAT
 };
 
 #endif // CONNECTIONCENTER_H

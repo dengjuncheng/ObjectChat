@@ -22,6 +22,12 @@ signals:
     void msgHasBeenSent(QString msg);
     void newMsg(QString msg);
     void voiceChatRequestResult(QString msg);
+    void newVoiceChatRequest(QString msg);
+    void cancleVoiceChat(QString msg);
+    void startVoiceChat(QString msg);
+    void startAsynVoiceChat(QString targetIp);
+    void voiceChatRefused(QString msg);
+    void voiceChatBreak(QString msg);
 public slots:
     void addContact(QString userId, QString friendId);
     QString getContactByUserId(QString userId);
@@ -40,6 +46,13 @@ public slots:
     int getUnreadCount(QString userId, QString friendId);
     void voiceChatRequest(QString userId, QString friendId);
     void readyVoiceChat(QString userId, QString friendId);
+    void cancleVoiceRequest(QString userId, QString friendId);
+    void accepteVoiceRequest(QString userId, QString friendId);
+
+    void onStartVoiceChat(QString targetIp);
+    void refuseVoiceChat(QString userId, QString friendId);
+    void breakVoiceChat(QString userId, QString friendId);
+    void interruptAsynVoiceChat();
 private:
     CaptureScreen *captureScreen;
     FileHelper *fileHelper;

@@ -13,6 +13,12 @@ VoiceChatService::VoiceChatService(QObject *parent) : QObject(parent),
 //收到ip地址，开始发送和接收数据
 void VoiceChatService::onReadSendRequest(QString ipAdress)
 {
+    QHostAddress host;
+    if(!host.setAddress(ipAdress)){
+        qDebug() << "VoiceChat::"<< "错误的目标ip地址:" << ipAdress;
+        return;
+    }
+    m_anotherAddress = ipAdress;
     QAudioFormat format;
     format.setSampleRate(8000);
     format.setChannelCount(1);
@@ -31,18 +37,18 @@ void VoiceChatService::onReadSendRequest(QString ipAdress)
     }
 
     QAudioDeviceInfo info = QAudioDeviceInfo::defaultInputDevice();
-        if (!info.isFormatSupported(format))
-        {
-            qDebug()<<"default format not supported try to use nearest";
-            format = info.nearestFormat(format);
-        }
+    if (!info.isFormatSupported(format))
+    {
+        qDebug()<<"default format not supported try to use nearest";
+        format = info.nearestFormat(format);
+    }
 
     inputDevice = m_audioInput->start();
     outputDevice = m_audioOutput->start();
     inputDevice->open(QIODevice::ReadOnly);
     this->m_anotherAddress = ipAdress;
     m_readSocket->bind(QHostAddress::AnyIPv4, m_port, QUdpSocket::ShareAddress | QUdpSocket::ReuseAddressHint);
-    m_readSocket->joinMulticastGroup (QHostAddress("224.0.0.0"));
+    //m_readSocket->joinMulticastGroup (QHostAddress("224.0.0.0"));
     connect(m_readSocket, &QUdpSocket::readyRead, this, &VoiceChatService::onRequestMsgRecived);
     connect(inputDevice,&QIODevice::readyRead,this,&VoiceChatService::onInputReadyRead);
 }
@@ -52,7 +58,7 @@ void VoiceChatService::onInputReadyRead()
     AudioPack ap;
     memset(&ap, 0 , sizeof(ap));
     ap.length = inputDevice->read(ap.data, 1024);
-    m_writeSocket->writeDatagram((const char*)&ap, sizeof(ap), QHostAddress("224.0.0.0"), m_port);
+    m_writeSocket->writeDatagram((const char*)&ap, sizeof(ap), QHostAddress(m_anotherAddress), m_port);
 }
 
 void VoiceChatService::onRequestMsgRecived()

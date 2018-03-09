@@ -33,5 +33,7 @@
         <file>icon/video-btn-2.png</file>
         <file>icon/man.png</file>
         <file>icon/woman.png</file>
+        <file>icon/connect.png</file>
+        <file>icon/disconnect.png</file>
     </qresource>
 </RCC>
