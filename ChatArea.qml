@@ -5,11 +5,12 @@ import QtQuick.Controls.Styles 1.4
 
 Rectangle{
     id:container;
-    property var friendData;
+    property var friendData: null;
     property var userData;
     signal lastMsgChanged(var msg);
+    signal emojiClick();
     color:"#F5F5F5";
-    visible: typeof(friendData) !== "undefined";
+    visible: friendData != null;
     function arriveToBotton(){
         chatList.positionViewAtEnd();
     }
@@ -39,6 +40,15 @@ Rectangle{
         }
     }
 
+    /**
+      *添加emoji到文本框
+      *
+      **/
+    function appendEmoji(value){
+        inputText.insert(inputText.cursorPosition,value + " ");
+        //inputText.append(value);
+    }
+
     //标题
     Rectangle{
         id:titleRec;
@@ -54,7 +64,7 @@ Rectangle{
             anchors.verticalCenter: parent.verticalCenter;
             font.bold: true;
             font.pixelSize: 17;
-            text:typeof(friendData)==="undefined" || friendData === null ? "" : friendData.nickName;
+            text:friendData === null ? "" : friendData.nickName;
         }
     }
 
@@ -85,6 +95,7 @@ Rectangle{
                 Layout.minimumHeight: 20
                 pressSource: "qrc:/icon/icon/emoji-btn-2.png";
                 normalSource:"qrc:/icon/icon/emoji-btn-1.png";
+                onClicked: emojiClick();
             }
             UtilButton{
                 id:fileBtn;
@@ -141,8 +152,7 @@ Rectangle{
                 pressSource: "qrc:/icon/icon/video-btn-2.png";
                 normalSource:"qrc:/icon/icon/video-btn-1.png";
                 onClicked: {
-                    var text = inputText.getText(0, inputText.text.length);
-                    interactionCenter.sendMsg(userData.stuId, friendData.stuId, inputText.text.toString(), text);
+                    interactionCenter.voiceChatRequest("133", "223")
                 }
             }
         }
@@ -281,7 +291,7 @@ Rectangle{
                     }else{
                         anchors.right = headPic.left;
                         anchors.rightMargin = 4;
-                        color = "#90EE90";
+                        color = "#B0E36E";
                     }
                 }
             }

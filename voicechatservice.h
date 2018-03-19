@@ -31,6 +31,7 @@ private:
     QString m_localAddress;
     QString m_anotherAddress;
     bool flag;
+    int count;
 private:
     void init();
 };

@@ -13,6 +13,7 @@ Window {
     maximumWidth: 250
     minimumHeight: 320
     minimumWidth: 250
+    flags:Qt.WindowCloseButtonHint
     property bool isOpen: false;
     //保持窗口大小不变
     onActiveChanged: {
@@ -244,6 +245,7 @@ Window {
         verticalAlignment: Text.AlignVCenter;
         text: users_rec.currentData.stuId;
         property string placeholderText: "输入账号"
+        validator:  RegExpValidator{regExp: /[0-9]+/}
 
         Text {
             text: userNameText.placeholderText;
@@ -557,8 +559,6 @@ Window {
         Text{
             id:contentText;
             anchors.centerIn: parent;
-            width:parent.width / 2;
-            height:parent.height / 4;
             text:"错误:00000000";
         }
         Button{

@@ -2,6 +2,8 @@ import QtQuick 2.0
 
 Rectangle {
     id:container;
+    signal emojiClick();
+    signal showUserInfoWindow(var userInfo);
     function addContact(friendData){
         addNewMsgContact(friendData);
         contactList.currentIndex = -1;
@@ -39,6 +41,10 @@ Rectangle {
         }else{
             interactionCenter.updateContactAddTime(stuId, friendData.stuId);
         }
+    }
+
+    function goToAddRequestView(){
+        contactList.currentIndex = -1;
     }
 
     Component.onCompleted: {
@@ -108,6 +114,11 @@ Rectangle {
             addNewMsgContact(friendObj);
 //            listModel.get(0).unreadCount = listModel.get(0).unreadCount + 1;
 //            console.log(listModel.get(0).unreadCount)
+            if(listModel.rowCount() === 1 && contactList.currentIndex == 0){
+                contactList.currentIndex = -1;
+                contactList.currentIndex = 0;
+            }
+
             if(contactList.currentIndex != -1 && tempId === msgInfo.friendId){
                 contactList.currentIndex = 0;
             }else{
@@ -116,6 +127,14 @@ Rectangle {
                 }
             }
         }
+    }
+
+    /**
+      * emoji点击后添加到文本框
+      **/
+
+    function appendEmoji(value){
+        chatArea.appendEmoji(value);
     }
 
     Rectangle{
@@ -169,6 +188,7 @@ Rectangle {
             clip: true;
             onCurrentIndexChanged: {
                 if(currentIndex === -1){
+                    chatArea.friendData = null;
                     return;
                 }
 
@@ -257,12 +277,28 @@ Rectangle {
                     anchors.bottom: headImg.bottom;
                     anchors.left: headImg.right;
                     anchors.leftMargin: 10;
-                    font.pixelSize: 12;
+                    font.pixelSize: 12
                     color:"#999999";
+                    elide: Text.ElideRight;
+                    width: 150;
                 }
             }
         }
     }
+    AddRequestRectangle{
+        id:addRequestRec;
+        width: parent.width - contactRec.width;
+        height:parent.height;
+        anchors.left: contactRec.right;
+        anchors.top:parent.top;
+        border.color: "#DCDCDC";
+        border.width: 0.5;
+        visible: !chatArea.visible
+        onShowUserInfo: {
+            showUserInfoWindow(userInfo)
+        }
+    }
+
     ChatArea{
         id:chatArea;
         width: parent.width - contactRec.width;
@@ -273,6 +309,9 @@ Rectangle {
         border.width: 0.5;
         onLastMsgChanged: {
             listModel.get(contactList.currentIndex).lastMsg = msg;
+        }
+        onEmojiClick: {
+            container.emojiClick();
         }
     }
 }

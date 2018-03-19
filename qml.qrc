@@ -12,5 +12,12 @@
         <file>FriendsPage.qml</file>
         <file>FriendInfo.qml</file>
         <file>MediaButton.qml</file>
+        <file>EmojiWindow.qml</file>
+        <file>EmojiRectangle.qml</file>
+        <file>NewFriendWindow.qml</file>
+        <file>AddRequestRectangle.qml</file>
+        <file>PersonalInfoWindow.qml</file>
+        <file>UserInfoWindow.qml</file>
+        <file>WebPage.qml</file>
     </qresource>
 </RCC>

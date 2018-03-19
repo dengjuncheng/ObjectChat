@@ -106,7 +106,7 @@ Rectangle {
     ToolTip{
         id:tip
         text:userData.nickName === "default" ? "添加" : userData.nickName;
-        visible: mouseArea.containsMouse ? true : false;
+        visible: mouseArea.containsMouse
     }
     Rectangle{
         id: closeBtn;

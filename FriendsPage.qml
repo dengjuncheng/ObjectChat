@@ -3,12 +3,19 @@ import QtQuick.Controls 1.4
 
 Rectangle {
     id:container;
-    property var friendsData;
+    property var friendsData:[];
     signal readyToSend(var friendData);
     onFriendsDataChanged: {
         friendModel.clear();
         friendModel.append(friendsData);
     }
+
+    function addNewFriend(msg){
+        var info = JSON.parse(msg);
+        friendModel.append(info)
+        friendsData.push(info);
+    }
+
 
     Rectangle{
         id:friendRec;

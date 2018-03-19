@@ -13,6 +13,7 @@ VoiceChatController::VoiceChatController(QObject *parent) : QObject(parent)
 VoiceChatController::~VoiceChatController()
 {
     m_workThread.exit(0);
+    m_workThread.terminate();
     delete m_service;
 }
 

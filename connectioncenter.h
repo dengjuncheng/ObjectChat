@@ -25,6 +25,13 @@ signals:
     void startVoiceChat(QString msg);
     void voiceChatRefused(QString msg);
     void breakVoiceChat(QString msg);
+    void searchUserResult(QString msg);
+    void addFriendResult(QString msg);
+    void allAddRequest(QString msg);
+    void modifyAddRequestStateResult(QString msg);
+    void newFriend(QString msg);
+    void newAddRequest(QString msg);
+    void updateUserInfoResult(QString msg);
 public slots:
     void onConnected();
     void onDestroy();
@@ -49,7 +56,14 @@ enum Code{
     CANLE_VOICE_CHAT,
     ACCEPT_VOICE_CHAT,
     REFUSE_VOICE_CHAT,
-    BREAK_VOICE_CHAT
+    BREAK_VOICE_CHAT,
+    SEARCH_USER,
+    ADD_FRIEND,
+    NEW_ADD_REQUEST,
+    ALL_ADD_REQUEST,
+    MODIFY_ADD_REQUEST_STATE,
+    NEW_FRIEND,
+    UPDATE_USER_INFO
 };
 
 #endif // CONNECTIONCENTER_H

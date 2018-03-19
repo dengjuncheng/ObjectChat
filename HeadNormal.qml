@@ -7,8 +7,9 @@ Rectangle {
     height: 100;
     radius: width / 2;
     color: "black";
-    opacity: mouseArea.containsMouse ? 0.5 : 1.0;
+    opacity: mouseArea.containsMouse ? 0.8 : 1.0;
     property alias source : image.source;
+    property alias cursorShape: mouseArea.cursorShape;
     signal clicked;
     Image{
         id :image;
@@ -43,5 +44,7 @@ Rectangle {
         anchors.fill: parent;
         hoverEnabled: true;
         onClicked: parent.clicked();
+        onPressed: container.opacity = 0.5;
+        onReleased: container.opacity = 1;
     }
 }

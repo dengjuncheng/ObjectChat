@@ -24,7 +24,8 @@ SOURCES += main.cpp \
     uploadcontroller.cpp \
     messagecontroller.cpp \
     voicechatcontroller.cpp \
-    voicechatservice.cpp
+    voicechatservice.cpp \
+    emojicontroller.cpp
 
 RESOURCES += qml.qrc \
     icon.qrc
@@ -52,4 +53,5 @@ HEADERS += \
     uploadcontroller.h \
     messagecontroller.h \
     voicechatcontroller.h \
-    voicechatservice.h
+    voicechatservice.h \
+    emojicontroller.h

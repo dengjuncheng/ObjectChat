@@ -1,6 +1,7 @@
 import QtQuick 2.0
 import QtQuick.Window 2.2
 import QtQuick.Controls 1.4
+import Qt.labs.platform 1.0
 
 //聊天窗口主窗体
 Window {
@@ -38,11 +39,17 @@ Window {
         parentWindow: chatWindow;
         onHeadClicked: {
             //TODO 添加头像点击后显示个人信息
-            console.log(JSON.stringify(userData));
+            userInfoWindow.init(userData);
+            userInfoWindow.visible = true;
         }
 
         onCurrentIndexChange: {
             tableView.currentIndex = index;
+        }
+
+        onOptionClicked: {
+            //newFriendWindow.visible = true;
+            menu.open();
         }
     }
 
@@ -58,12 +65,18 @@ Window {
             RecentContact{
                 id:contact;
                 anchors.fill: parent;
+                onEmojiClick: emojiWindow.visible = true;
+                onShowUserInfoWindow: {
+                    personalInfo.userInfo = userInfo;
+                    personalInfo.init();
+                    personalInfo.visible = true;
+                }
             }
         }
         Tab{
             id:tab2;
             FriendsPage{
-                anchors.fill: parent;
+                anchors.fill: parent;                      //注意：Tab继承自Loader，具有延迟加载的特性，在没有显示Tab的时候，Tab的item为null，无法调用
                 Component.onCompleted: {
                     friendsData = loginData.friend;
                 }
@@ -76,10 +89,14 @@ Window {
         }
         Tab{
             id:tab3;
-            Rectangle{
+            WebPage{
+                id:web
                 anchors.fill: parent;
-                color:"green";
             }
+        }
+        Connections{
+            target: interactionCenter;
+
         }
     }
     Connections{
@@ -104,7 +121,7 @@ Window {
             infoText.text = info.msg;
             if(info.code !== 0){
                 showAnimation.start();
-                //return;
+                return;
             }
             //显示语音聊天窗口
             voiceChatWindow.openWindow(info.command.friendId, true);
@@ -164,6 +181,25 @@ Window {
             infoText.text = "语音通话结束";
             voiceChatWindow.visible = false;
             showAnimation.start();
+        }
+        onNewFriendAccepted:{
+            if(tab2.item != null){
+                tab2.item.addNewFriend(msg);
+            }
+            loginData.friend.push(JSON.parse(msg));
+            loginController.setFriends(JSON.stringify(loginData.friend));
+        }
+        onUpdateUserInfoResult:{
+            var info = JSON.parse(msg);
+            if(info.code !== 0){
+                //修改失败提示
+                return;
+            }
+            userData = info.userInfo;
+            loginController.setUser(JSON.stringify(info.userInfo));
+            userInfoWindow.updateUserInfo(info.userInfo);
+            loginData.user = info.userInfo;
+            leftTitleBar.userData = info.userInfo;
         }
     }
 
@@ -362,5 +398,46 @@ Window {
                 showAnimation.start();
             }
         }
+    }
+    EmojiWindow{
+        id:emojiWindow;
+        visible: false;
+        onEmojiClicked:tab1.item.appendEmoji(value);
+    }
+
+    NewFriendWindow{
+        id:newFriendWindow;
+    }
+    Menu{
+        id:menu;
+        visible: false;
+        MenuItem{
+            id:addMenuItem;
+            text:"查找好友";
+            onTriggered: {
+                newFriendWindow.visible = true;
+            }
+        }
+
+        MenuItem{
+            id:addListItem;
+            text:"好友验证"
+            onTriggered: {
+                leftTitleBar.setCurrentIndex(0)
+                tab1.item.goToAddRequestView();
+            }
+        }
+    }
+    function showPersonalInfoWindow(userInfo, model){
+        personalInfo.visible = true;
+    }
+
+    PersonalInfoWindow{
+        id:personalInfo;
+        visible: false;
+    }
+    UserInfoWindow{
+        id:userInfoWindow;
+        visible: false;
     }
 }

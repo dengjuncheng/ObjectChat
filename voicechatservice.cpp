@@ -3,10 +3,12 @@
 #include <QIODevice>
 #include <QDebug>
 #include <QThread>
+#include <QDateTime>
 VoiceChatService::VoiceChatService(QObject *parent) : QObject(parent),
      m_writeSocket(new QUdpSocket(this)),m_readSocket(new QUdpSocket(this))
 {
     m_port = 8088;
+    //m_readSocket->setReadBufferSize(64*1024);
     //init();
 }
 
@@ -14,6 +16,7 @@ VoiceChatService::VoiceChatService(QObject *parent) : QObject(parent),
 void VoiceChatService::onReadSendRequest(QString ipAdress)
 {
     QHostAddress host;
+    count = 0;
     if(!host.setAddress(ipAdress)){
         qDebug() << "VoiceChat::"<< "错误的目标ip地址:" << ipAdress;
         return;
@@ -57,8 +60,11 @@ void VoiceChatService::onReadSendRequest(QString ipAdress)
 void VoiceChatService::onInputReadyRead()
 {
     AudioPack ap;
+    count++;
     memset(&ap, 0 , sizeof(ap));
     ap.length = inputDevice->read(ap.data, 1024);
+    //qDebug() << ap.length;
+    //qDebug() << QDateTime::currentDateTime().currentSecsSinceEpoch();
     m_writeSocket->writeDatagram((const char*)&ap, sizeof(ap), QHostAddress(m_anotherAddress), m_port);
 }
 
@@ -73,6 +79,7 @@ void VoiceChatService::onRequestMsgRecived()
 
 void VoiceChatService::close()
 {
+    qDebug() << count;
     m_audioInput->stop();
     m_audioOutput->stop();
     if(inputDevice->isOpen())

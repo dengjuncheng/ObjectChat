@@ -11,6 +11,7 @@ class ConnectionCenter;
 class UploadController;
 class MessageController;
 class VoiceChatController;
+class EmojiController;
 class InteractionCenter : public QObject
 {
     Q_OBJECT
@@ -28,7 +29,16 @@ signals:
     void startAsynVoiceChat(QString targetIp);
     void voiceChatRefused(QString msg);
     void voiceChatBreak(QString msg);
+    void searchUserResult(QString msg);
+    void addFriendResult(QString msg);
+    void allAddRequest(QString msg);
+    void modifyAddRequestStateResult(QString msg);
+    void newFriendAccepted(QString msg);
+    void newAddRequest(QString msg);
+    void updateUserInfoResult(QString msg);
 public slots:
+    void test(QString msg);
+
     void addContact(QString userId, QString friendId);
     QString getContactByUserId(QString userId);
     void updateContactAddTime(QString userId,QString friendId);
@@ -52,6 +62,17 @@ public slots:
     void onStartVoiceChat(QString targetIp);
     void refuseVoiceChat(QString userId, QString friendId);
     void breakVoiceChat(QString userId, QString friendId);
+
+    void searchUser(QString userId);
+    void addUser(QString userId, QString friendId);
+
+    QStringList getEmojis();
+
+    void getAddRequest(QString userId);
+    void modifyAddRequestState(QString msg);
+
+    // 更新用户信息
+    void updatePersonalInfo(QString userInfo);
 private:
     CaptureScreen *captureScreen;
     FileHelper *fileHelper;
@@ -59,6 +80,7 @@ private:
     UploadController * m_uploadController;
     MessageController *m_messageController;
     VoiceChatController *m_voiceChatController;
+    EmojiController *m_emojiController;
 };
 
 enum MsgType

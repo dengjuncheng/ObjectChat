@@ -4,9 +4,10 @@ Rectangle {
     id:container;
     property var parentWindow;
     property var userData;
-    color:"#003366";
+    color:"#cc191919";
     signal headClicked(var userData);
     signal currentIndexChange(var index);
+    signal optionClicked;
 
     function setCurrentIndex(index){
         listView.currentIndex = index;
@@ -169,6 +170,7 @@ Rectangle {
             anchors.fill: parent;
             onPressed: optionImg.opacity = 0.4;
             onReleased: optionImg.opacity = 0.8;
+            onClicked: optionClicked();
         }
     }
 }

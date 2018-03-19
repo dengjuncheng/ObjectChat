@@ -12,13 +12,15 @@
 #include <uploadcontroller.h>
 #include <messagecontroller.h>
 #include <voicechatcontroller.h>
+#include <emojicontroller.h>
 
 //连接各个组件之间信号和槽
 InteractionCenter::InteractionCenter(CaptureScreen *obj, FileHelper* obj2, ConnectionCenter *conn, QObject *parent) : QObject(parent),
     captureScreen(obj),fileHelper(obj2),m_conn(conn),
     m_uploadController(new UploadController(this)),
     m_messageController(new MessageController(conn,this)),
-    m_voiceChatController(new VoiceChatController(this))
+    m_voiceChatController(new VoiceChatController(this)),
+    m_emojiController(new EmojiController(this))
 {
     connect(captureScreen,&CaptureScreen::signalCompleteCature, this, &InteractionCenter::signalCompleteCature);
     connect(m_uploadController, &UploadController::uploadSuccess, this, &InteractionCenter::sendTextMsg);
@@ -40,11 +42,31 @@ InteractionCenter::InteractionCenter(CaptureScreen *obj, FileHelper* obj2, Conne
     connect(conn, &ConnectionCenter::voiceChatRefused, this, &InteractionCenter::voiceChatRefused);
     connect(conn, &ConnectionCenter::breakVoiceChat, this, &InteractionCenter::voiceChatBreak); //改变界面数据
     connect(conn,&ConnectionCenter::breakVoiceChat,m_voiceChatController,&VoiceChatController::interrupt); //修改另一个线程中的语音通信
+
+    //搜索用户信息
+    connect(conn,&ConnectionCenter::searchUserResult,this, &InteractionCenter::searchUserResult);
+    connect(conn,&ConnectionCenter::addFriendResult,this,&InteractionCenter::addFriendResult);
+
+    connect(conn,&ConnectionCenter::allAddRequest,this, &InteractionCenter::allAddRequest);   // 获取所有添加请求的结果
+    connect(conn,&ConnectionCenter::modifyAddRequestStateResult,this,&InteractionCenter::modifyAddRequestStateResult);//修改添加请求状态的结果
+    connect(conn,&ConnectionCenter::newFriend,this, &InteractionCenter::newFriendAccepted);//新的好友
+    //connect(conn,&ConnectionCenter::newFriend,this,&InteractionCenter::test);
+    connect(conn, &ConnectionCenter::newAddRequest,this, &InteractionCenter::newAddRequest);
+
+    //更新用户信息结果信号槽
+    connect(conn, &ConnectionCenter::updateUserInfoResult,this,&InteractionCenter::updateUserInfoResult);
 }
 
 InteractionCenter::~InteractionCenter()
 {
     captureScreen->deleteLater();
+}
+
+//信号槽调试方法，需要使用直接连接到此方法
+void InteractionCenter::test(QString msg)
+{
+    emit newFriendAccepted(msg);
+    qDebug()<< msg;
 }
 
 //数据库操作
@@ -267,4 +289,45 @@ void InteractionCenter::breakVoiceChat(QString userId, QString friendId)
     QString msg = QString("%1##%2").arg(QString::number(Code::BREAK_VOICE_CHAT)).arg(data);
     m_conn->sendTextMsg(msg.toUtf8().toBase64());
     m_voiceChatController->interrupt(); //发起断开方 终止udp输出和音频录入
+}
+
+void InteractionCenter::searchUser(QString userId)
+{
+    QString msg = QString("%1##%2").arg(QString::number(Code::SEARCH_USER)).arg(userId);
+    m_conn->sendTextMsg(msg.toUtf8().toBase64());
+}
+
+void InteractionCenter::addUser(QString userId, QString friendId)
+{
+    QJsonDocument document;
+    QJsonObject  jsonObj;
+    jsonObj.insert("userId", userId);
+    jsonObj.insert("friendId", friendId);
+    document.setObject(jsonObj);
+    QString data(QString(document.toJson()));
+    QString msg = QString("%1##%2").arg(QString::number(Code::ADD_FRIEND)).arg(data);
+    m_conn->sendTextMsg(msg.toUtf8().toBase64());
+}
+
+QStringList InteractionCenter::getEmojis()
+{
+    return m_emojiController->getEmojis();
+}
+
+void InteractionCenter::getAddRequest(QString userId)
+{
+    QString msg = QString("%1##%2").arg(QString::number(Code::ALL_ADD_REQUEST)).arg(userId);
+    m_conn->sendTextMsg(msg.toUtf8().toBase64());
+}
+
+void InteractionCenter::modifyAddRequestState(QString msg)
+{
+    QString info = QString("%1##%2").arg(QString::number(Code::MODIFY_ADD_REQUEST_STATE)).arg(msg);
+    m_conn->sendTextMsg(info.toUtf8().toBase64());
+}
+
+void InteractionCenter::updatePersonalInfo(QString userInfo)
+{
+     QString info = QString("%1##%2").arg(QString::number(Code::UPDATE_USER_INFO)).arg(userInfo);
+     m_conn->sendTextMsg(info.toUtf8().toBase64());
 }
