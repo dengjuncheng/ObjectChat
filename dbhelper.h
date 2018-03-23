@@ -26,7 +26,7 @@ public:
     void updateUser(UserInfo userInfo);
     bool insertNewMsg(MsgInfo msgInfo);
     void updateMsgState(QString uuid);
-    bool isReceivedMsg(QString uuid);
+    bool isReceivedMsg(QString uuid, QString userId);
     int getUnreadCount(QString userId, QString friendId);
 signals:
 

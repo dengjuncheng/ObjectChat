@@ -237,7 +237,7 @@ void DbHelper::updateUser(UserInfo userInfo)
 //从服务器获取未读信息插入到本地数据库
 bool DbHelper::insertNewMsg(MsgInfo msgInfo)
 {
-    if(isReceivedMsg(msgInfo.uuid))
+    if(isReceivedMsg(msgInfo.uuid, msgInfo.userId))
     {
         return false;
     }
@@ -269,11 +269,12 @@ void DbHelper::updateMsgState(QString uuid)
 }
 
 //判断服务器上的未读信息是否已经添加到本地数据库
-bool DbHelper::isReceivedMsg(QString uuid)
+bool DbHelper::isReceivedMsg(QString uuid, QString userId)
 {
     QSqlQuery query;
-    query.prepare("select count(0) as count from chat_record where uuid = ? and direction=0");
+    query.prepare("select count(0) as count from chat_record where uuid = ? and user_id = ?");
     query.addBindValue(uuid);
+    query.addBindValue(userId);
     query.exec();
     query.next();
     int count = query.value("count").toInt();
