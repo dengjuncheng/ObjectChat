@@ -71,7 +71,7 @@ Rectangle {
             anchors.rightMargin: 20;
             font.family: "Hannotate SC";
             elide: Text.ElideRight;
-            text:userInfo == null ?"你还是删了我吧 不然我总是想和你说话--------------" : userInfo.declaration;
+            text:userInfo == null ? "" : userInfo.declaration;
             MouseArea{
                 id:descArea;
                 hoverEnabled: true;
@@ -163,7 +163,7 @@ Rectangle {
             anchors.top:signatureT.top;
             anchors.right: parent.right;
             anchors.rightMargin: 20;
-            text:userInfo == null ? "你还是删了我吧 不然我总是想和你说话--------------" : userInfo.declaration;
+            text:userInfo == null ? "" : userInfo.declaration;
             elide: Text.ElideRight;
         }
         Text{

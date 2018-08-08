@@ -45,7 +45,7 @@ void LoginController::login(QString userName, QString password, QString state)
     m_timer->start();
 }
 
-//数据库操作
+//数据库操作：保存用户信息
 void LoginController::saveUserInfo(QString userName, QString password,QString state, bool rememberPass, QString headPic, QString nickName)
 {
 //    downLoader = new DownLoadCenter(userName,this);

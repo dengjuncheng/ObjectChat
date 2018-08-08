@@ -12,7 +12,7 @@ Window {
     visible:true;
     property var loginData;
     property var userData;
-
+    //窗口显示时，渐显动画
     NumberAnimation{
         id:showAni;
         target: chatWindow;
@@ -21,6 +21,7 @@ Window {
         from:0;
         to:1;
     }
+    //窗口加载成功时
     Component.onCompleted: {
         showAni.start();
         leftTitleBar.userData = loginData.user;
@@ -52,7 +53,7 @@ Window {
             menu.open();
         }
     }
-
+    //一级菜单
     TabView{
         id:tableView;
         anchors.left:leftTitleBar.right;
@@ -99,6 +100,7 @@ Window {
 
         }
     }
+    //信号槽相关代码
     Connections{
         target: loginController;
         onFriendStateChanged:{
@@ -202,7 +204,7 @@ Window {
             leftTitleBar.userData = info.userInfo;
         }
     }
-
+    //错误信息窗口
     Rectangle{
         id:errorInfoRec;
         height: 50;
@@ -252,7 +254,7 @@ Window {
             }
         }
     }
-
+    //语音聊天窗口
     Window{
         id:voiceChatWindow;
         visible:false;
@@ -399,15 +401,17 @@ Window {
             }
         }
     }
+    //表情窗口
     EmojiWindow{
         id:emojiWindow;
         visible: false;
         onEmojiClicked:tab1.item.appendEmoji(value);
     }
-
+    //添加好友窗口
     NewFriendWindow{
         id:newFriendWindow;
     }
+    //菜单
     Menu{
         id:menu;
         visible: false;
@@ -428,14 +432,16 @@ Window {
             }
         }
     }
+    //显示个人信息窗口方法
     function showPersonalInfoWindow(userInfo, model){
         personalInfo.visible = true;
     }
-
+    //个人信息窗口
     PersonalInfoWindow{
         id:personalInfo;
         visible: false;
     }
+    //好友信息窗口
     UserInfoWindow{
         id:userInfoWindow;
         visible: false;

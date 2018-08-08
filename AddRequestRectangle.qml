@@ -36,36 +36,6 @@ Rectangle {
     }
     ListModel{
         id:requestModel
-//        ListElement{
-//            headPic: "qrc:/icon/icon/head-default.jpg";
-//            nickName:"邓君城~~"
-//            stuId:"14310320631"
-//        }
-//        ListElement{
-//            headPic: "qrc:/icon/icon/head-default.jpg";
-//            nickName:"邓君城~~"
-//            stuId:"14310320631"
-//        }
-//        ListElement{
-//            headPic: "qrc:/icon/icon/head-default.jpg";
-//            nickName:"邓君城~~"
-//            stuId:"14310320631"
-//        }
-//        ListElement{
-//            headPic: "qrc:/icon/icon/head-default.jpg";
-//            nickName:"邓君城~~"
-//            stuId:"14310320631"
-//        }
-//        ListElement{
-//            headPic: "qrc:/icon/icon/head-default.jpg";
-//            nickName:"邓君城~~"
-//            stuId:"14310320631"
-//        }
-//        ListElement{
-//            headPic: "qrc:/icon/icon/head-default.jpg";
-//            nickName:"邓君城~~"
-//            stuId:"14310320631"
-//        }
     }
     Component{
         id:delegate;

@@ -69,25 +69,25 @@ void InteractionCenter::test(QString msg)
     qDebug()<< msg;
 }
 
-//数据库操作
+//数据库操作：添加最近联系人
 void InteractionCenter::addContact(QString userId, QString friendId)
 {
     DbHelper::getInstance()->insertContact(userId, friendId);
 }
 
-//数据库操作
+//数据库操作：通过用户id拿到联系人
 QString InteractionCenter::getContactByUserId(QString userId)
 {
     return DbHelper::getInstance()->getContactByUserId(userId);
 }
 
-//数据库操作
+//数据库操作：更新联系人添加时间
 void InteractionCenter::updateContactAddTime(QString userId, QString friendId)
 {
     DbHelper::getInstance()->updateContactAddTime(userId, friendId);
 }
 
-//数据库操作
+//数据库操作：获取当前时间
 QString InteractionCenter::getCurrentDateTime(QString format)
 {
     return QDateTime::currentDateTime().toString(format);
@@ -99,19 +99,19 @@ void InteractionCenter::capture()
     captureScreen->captureScreen();
 }
 
-//数据库操作
+//数据库操作：通过用户id获取聊天记录
 QString InteractionCenter::getChatRecordByUserId(QString userId, QString friendId)
 {
     return DbHelper::getInstance()->getChatRecordByUserId(userId, friendId);
 }
 
-//数据库操作
+//数据库操作：更新信息状态
 void InteractionCenter::updateReadMsg(QString userId, QString friendId)
 {
     DbHelper::getInstance()->updateReadMsg(userId, friendId);
 }
 
-//数据库操作
+//数据库操作：获取最新一条聊天记录
 QString InteractionCenter::getLastMsg(QString userId, QString friendId)
 {
     return DbHelper::getInstance()->getLastMsg(userId, friendId);
